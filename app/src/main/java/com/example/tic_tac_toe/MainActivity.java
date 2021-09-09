@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity
 {
     int current_player = 0; //0 represents X, 1 represents O
-    int finished_game = 0;
+    boolean finished_game = false;
     int[] game_state = {2, 2, 2, 2, 2, 2, 2, 2, 2}; //2 is used to represent an empty tile
     /*
     2d array used to represent the board like so
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity
      {6  | 7  | 8} }
      */
     int[][] win_states = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, { 1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
-    int counter = 0; //used to track if the game is a draw, so all tiles are filled without a win
+    int counter = 0; //used to track if the game is a draw, so if all tiles are filled without a win
 
 
     public void run_game(View view)
@@ -31,14 +31,15 @@ public class MainActivity extends AppCompatActivity
         int tapped_image = Integer.parseInt(image.getTag().toString());
 
         //reset game if someone won
-        if (finished_game == 1) {
+        if (finished_game) {
+            TextView status = findViewById(R.id.status);
+            status.setText("Game over, click again to begin another");
             reset_game(view);
         }
 
         //update game state
-        //current_player = update_game_state(current_player, game_state, tapped_image, image);
 
-        //ensure the input does not conflict with an existing tile
+        //check if the input does not conflict with an existing tile
         if (game_state[tapped_image] != 2)
         {
             TextView status = findViewById(R.id.status);
@@ -53,21 +54,19 @@ public class MainActivity extends AppCompatActivity
                 //input X into grid
                 image.setImageResource(R.drawable.x);
                 current_player = 1;
-                //TextView status = findViewById(R.id.status);
             }
             else
             {
                 //input O into grid
                 image.setImageResource(R.drawable.o);
                 current_player = 0;
-                //TextView status = findViewById(R.id.status);
             }
             counter++;
         }
 
 
         //check if the game was a draw
-        if (counter == 9 && finished_game == 0)
+        if (counter == 9 && !finished_game)
         {
             TextView status = findViewById(R.id.status);
             status.setText("Game was a draw");
@@ -79,8 +78,9 @@ public class MainActivity extends AppCompatActivity
         {
             if (game_state[state_iterator_array[0]] != 2 && game_state[state_iterator_array[0]] == game_state[state_iterator_array[1]] && game_state[state_iterator_array[1]] == game_state[state_iterator_array[2]])
             {
-                finished_game = 1;
+                finished_game = true;
 
+                /*
                 String winner;
                 if (game_state[state_iterator_array[0]] == 0)
                 {
@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity
 
                 TextView status = findViewById(R.id.status);
                 status.setText(winner);
+
+                 */
                 break;
             }
         }
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity
     {
         current_player = 0;
         counter = 0;
-        finished_game = 0;
+        finished_game = false;
         for (int i = 0; i < game_state.length; i++)
         {
             game_state[i] = 2;
