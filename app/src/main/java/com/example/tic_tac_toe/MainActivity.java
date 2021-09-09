@@ -31,47 +31,52 @@ public class MainActivity extends AppCompatActivity
         int tapped_image = Integer.parseInt(image.getTag().toString());
 
         //update game state
-        if (current_player == 0)
+        //current_player = update_game_state(current_player, game_state, tapped_image, image);
+
+        //ensure the input does not conflict with an existing tile
+        if (game_state[tapped_image] != 2)
         {
-            //input x into grid
-            game_state[tapped_image] = current_player;
-            image.setImageResource(R.drawable.x);
-            current_player = 1;
-            //TextView status = findViewById(R.id.status);
+            TextView status = findViewById(R.id.status);
+            status.setText("Invalid input, choose an empty tile instead");
         }
-        else if (current_player == 1)
+        //we can be sure the input correlates to an empty tile
+        else
         {
-            //input o into grid
             game_state[tapped_image] = current_player;
-            image.setImageResource(R.drawable.o);
-            current_player = 0;
-            //TextView status = findViewById(R.id.status);
+            if (current_player == 0)
+            {
+                //input X into grid
+                image.setImageResource(R.drawable.x);
+                current_player = 1;
+                //TextView status = findViewById(R.id.status);
+            }
+            else
+            {
+                //input O into grid
+                image.setImageResource(R.drawable.o);
+                current_player = 0;
+                //TextView status = findViewById(R.id.status);
+            }
+            counter++;
         }
 
-        counter++;
 
         //check if the game was a draw
-        if (counter == 9)
-        {
+        if (counter == 9 && finished_game == 0) {
             TextView status = findViewById(R.id.status);
             status.setText("Game was a draw");
             reset_game(view);
         }
 
         //check if a player has won
-        for (int[] state_iterator_array: win_states)
-        {
-            if (game_state[state_iterator_array[0]] != 2 && game_state[state_iterator_array[0]] == game_state[state_iterator_array[1]] && game_state[state_iterator_array[1]] == game_state[state_iterator_array[2]])
-            {
+        for (int[] state_iterator_array : win_states) {
+            if (game_state[state_iterator_array[0]] != 2 && game_state[state_iterator_array[0]] == game_state[state_iterator_array[1]] && game_state[state_iterator_array[1]] == game_state[state_iterator_array[2]]) {
                 finished_game = 1;
 
                 String winner;
-                if (game_state[0] == 0)
-                {
+                if (game_state[0] == 0) {
                     winner = "X has won";
-                }
-                else
-                {
+                } else {
                     winner = "O has won";
                 }
 
@@ -82,11 +87,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         //reset game if someone won
-        if (finished_game == 1)
-        {
+        if (finished_game == 1) {
             reset_game(view);
         }
     }
+
 
 
     public void reset_game(View view)
