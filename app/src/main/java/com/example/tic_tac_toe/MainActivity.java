@@ -1,3 +1,9 @@
+/*
+@author: LXu, September 9 2021
+Inspiration from https://www.geeksforgeeks.org/how-to-build-a-tic-tac-toe-game-in-android/
+ */
+
+
 package com.example.tic_tac_toe;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,8 +38,8 @@ public class MainActivity extends AppCompatActivity
 
         //reset game if someone won
         if (finished_game) {
-            TextView status = findViewById(R.id.status);
-            status.setText("Game over, click again to begin another");
+            TextView status_button = findViewById(R.id.status);
+            status_button.setText("Game over, click again to begin another");
             reset_game(view);
         }
 
@@ -42,12 +48,14 @@ public class MainActivity extends AppCompatActivity
         //check if the input does not conflict with an existing tile
         if (game_state[tapped_image] != 2)
         {
-            TextView status = findViewById(R.id.status);
-            status.setText("Invalid input, choose an empty tile instead");
+            TextView status_button = findViewById(R.id.status);
+            status_button.setText("Invalid input, choose an empty tile instead");
         }
         //we can be sure the input correlates to an empty tile
         else
         {
+            TextView status_button = findViewById(R.id.status);
+            status_button.setText("New Game");
             game_state[tapped_image] = current_player;
             if (current_player == 0)
             {
@@ -65,38 +73,25 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        //check if the game was a draw
-        if (counter == 9 && !finished_game)
-        {
-            TextView status = findViewById(R.id.status);
-            status.setText("Game was a draw");
-            reset_game(view);
-        }
+
 
         //check if a player has won
-        for (int[] state_iterator_array : win_states)
+        for (int[] state_iterator_array : win_states) //enhanced for loop provides similar functionality to a basic python list comprehension
         {
             if (game_state[state_iterator_array[0]] != 2 && game_state[state_iterator_array[0]] == game_state[state_iterator_array[1]] && game_state[state_iterator_array[1]] == game_state[state_iterator_array[2]])
             {
                 finished_game = true;
-
-                /*
-                String winner;
-                if (game_state[state_iterator_array[0]] == 0)
-                {
-                    winner = "X has won, click again to start another game";
-                }
-                else
-                {
-                    winner = "O has won, click again to start another game";
-                }
-
-                TextView status = findViewById(R.id.status);
-                status.setText(winner);
-
-                 */
+                TextView status_button = findViewById(R.id.status);
+                status_button.setText("Game over, click again to begin another");
                 break;
             }
+        }
+        //check if the game was a draw
+        if (counter == 9)
+        {
+            TextView status_button = findViewById(R.id.status);
+            status_button.setText("Game was a draw, click again to begin another");
+            finished_game = true;
         }
 
     }
@@ -123,8 +118,8 @@ public class MainActivity extends AppCompatActivity
         ((ImageView) findViewById(R.id.imageView7)).setImageResource(0);
         ((ImageView) findViewById(R.id.imageView8)).setImageResource(0);
 
-        TextView status = findViewById(R.id.status);
-        status.setText("New game");
+        TextView status_button = findViewById(R.id.status);
+        status_button.setText("New game");
     }
 
     @Override
