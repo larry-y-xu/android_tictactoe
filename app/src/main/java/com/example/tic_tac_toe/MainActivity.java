@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity
         ImageView image = (ImageView) view;
         int tapped_image = Integer.parseInt(image.getTag().toString());
 
+        //reset game if someone won
+        if (finished_game == 1) {
+            reset_game(view);
+        }
+
         //update game state
         //current_player = update_game_state(current_player, game_state, tapped_image, image);
 
@@ -62,22 +67,28 @@ public class MainActivity extends AppCompatActivity
 
 
         //check if the game was a draw
-        if (counter == 9 && finished_game == 0) {
+        if (counter == 9 && finished_game == 0)
+        {
             TextView status = findViewById(R.id.status);
             status.setText("Game was a draw");
             reset_game(view);
         }
 
         //check if a player has won
-        for (int[] state_iterator_array : win_states) {
-            if (game_state[state_iterator_array[0]] != 2 && game_state[state_iterator_array[0]] == game_state[state_iterator_array[1]] && game_state[state_iterator_array[1]] == game_state[state_iterator_array[2]]) {
+        for (int[] state_iterator_array : win_states)
+        {
+            if (game_state[state_iterator_array[0]] != 2 && game_state[state_iterator_array[0]] == game_state[state_iterator_array[1]] && game_state[state_iterator_array[1]] == game_state[state_iterator_array[2]])
+            {
                 finished_game = 1;
 
                 String winner;
-                if (game_state[0] == 0) {
-                    winner = "X has won";
-                } else {
-                    winner = "O has won";
+                if (game_state[state_iterator_array[0]] == 0)
+                {
+                    winner = "X has won, click again to start another game";
+                }
+                else
+                {
+                    winner = "O has won, click again to start another game";
                 }
 
                 TextView status = findViewById(R.id.status);
@@ -86,10 +97,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        //reset game if someone won
-        if (finished_game == 1) {
-            reset_game(view);
-        }
     }
 
 
@@ -113,6 +120,9 @@ public class MainActivity extends AppCompatActivity
         ((ImageView) findViewById(R.id.imageView6)).setImageResource(0);
         ((ImageView) findViewById(R.id.imageView7)).setImageResource(0);
         ((ImageView) findViewById(R.id.imageView8)).setImageResource(0);
+
+        TextView status = findViewById(R.id.status);
+        status.setText("New game");
     }
 
     @Override
