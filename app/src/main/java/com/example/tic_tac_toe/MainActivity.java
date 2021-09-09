@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity
     int current_player = 0; //0 represents X, 1 represents O
     boolean finished_game = false;
     int[] game_state = {2, 2, 2, 2, 2, 2, 2, 2, 2}; //2 is used to represent an empty tile
+    int player_zero_score = 0;
+    int player_one_score = 0;
     /*
     2d array used to represent the board like so
    { {0  | 1  | 2}
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity
         if (finished_game) {
             TextView status_button = findViewById(R.id.status);
             status_button.setText("Game over, click again to begin another");
+            TextView score_button = findViewById(R.id.score);
+            score_button.setText(String.format("Player X score: %d | Player O score: %d", player_zero_score, player_one_score));
             reset_game(view);
         }
 
@@ -81,8 +85,20 @@ public class MainActivity extends AppCompatActivity
             if (game_state[state_iterator_array[0]] != 2 && game_state[state_iterator_array[0]] == game_state[state_iterator_array[1]] && game_state[state_iterator_array[1]] == game_state[state_iterator_array[2]])
             {
                 finished_game = true;
-                TextView status_button = findViewById(R.id.status);
-                status_button.setText("Game over, click again to begin another");
+                //TextView status_button = findViewById(R.id.status);
+                //status_button.setText("Game over, click again to begin another");
+                if (game_state[state_iterator_array[0]] == 0)
+                {
+                    TextView status_button = findViewById(R.id.status);
+                    status_button.setText("Player X won, click again to begin another");
+                    player_zero_score++;
+                }
+                else
+                {
+                    TextView status_button = findViewById(R.id.status);
+                    status_button.setText("Player O won, click again to begin another");
+                    player_one_score++;
+                }
                 break;
             }
         }
