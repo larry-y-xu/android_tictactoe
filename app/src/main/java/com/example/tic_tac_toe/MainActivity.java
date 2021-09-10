@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity
         if (finished_game) {
             TextView status_button = findViewById(R.id.status);
             status_button.setText("Game over, click again to begin another");
+            image = (ImageView) view;
+            tapped_image = Integer.parseInt(image.getTag().toString());
             TextView score_button = findViewById(R.id.score);
             score_button.setText(String.format("Player X score: %d | Player O score: %d", player_zero_score, player_one_score));
             reset_game(view);
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
         //check if the game was a draw
-        if (counter == 9)
+        if (counter == 9 && !finished_game)
         {
             TextView status_button = findViewById(R.id.status);
             status_button.setText("Game was a draw, click again to begin another");
